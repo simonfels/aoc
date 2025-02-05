@@ -1,0 +1,26 @@
+FROM php:8.4.1-apache-bookworm
+
+ENV APACHE_DOCUMENT_ROOT /var/www/aoc/public
+
+RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+RUN apt-get update \
+    && apt-get install -y git zip libxml2-dev libgmp-dev
+RUN pecl install xdebug \
+    && docker-php-ext-enable xdebug
+RUN docker-php-ext-install bcmath xml gmp intl
+RUN a2enmod rewrite
+
+RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | bash && apt install symfony-cli
+
+#Install Composer
+WORKDIR /var/www
+
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+RUN php composer-setup.php --install-dir=. --filename=composer
+RUN mv composer /usr/local/bin/
+
+EXPOSE 80

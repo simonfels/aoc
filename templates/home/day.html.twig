@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% include 'components/link.html.twig' with {
+        text: 'Link to Puzzle',
+        href: "https://adventofcode.com/"~currentYear~"/day/"~currentDay,
+        target: '_blank',
+        additionalClasses: ['bg-rose-500', 'my-4', 'text-white']
+    } only %}
+    <div class="grid grid-cols-2 gap-4">
+        {% if test is defined and test is not empty %}
+            {% include 'home/result.html.twig' with { title: 'Test results', result: test } only %}
+        {% endif %}
+        {% include 'home/result.html.twig' with { title: 'Real results', result: real } only %}
+    </div>
+{% endblock %}

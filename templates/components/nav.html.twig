@@ -1,0 +1,30 @@
+{% set currentDay = currentDay|default(0) %}
+{% set selectedClasses = 'bg-white border-2 border-rose-500' %}
+{% set unselectedClasses = 'bg-rose-500 text-white' %}
+
+<div class="flex justify-between gap-2 mt-2">
+    {% for year in range(2015, 2024) %}
+        {% include 'components/link.html.twig' with {
+            text: year,
+            href: path('year_route', {year}),
+            additionalClasses: [
+                currentYear == year ? selectedClasses : unselectedClasses,
+                'grow'
+            ]
+        } only %}
+    {% endfor %}
+</div>
+{% if currentDay is defined %}
+    <div class="flex justify-between gap-2 mt-2">
+        {% for day in range(1, 25) %}
+            {% include 'components/link.html.twig' with {
+                text: day,
+                href: path('day_route', {year: currentYear, day: day}),
+                additionalClasses: [
+                    currentDay == day ? selectedClasses : unselectedClasses,
+                    'grow'
+                ]
+            } only %}
+        {% endfor %}
+    </div>
+{% endif %}

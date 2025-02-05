@@ -1,0 +1,18 @@
+<div>
+    <h3 class="text-xl">{{ title }}</h3>
+    {% if result.resultFirstStar is defined %}
+        <div>⭐ {{ result.resultFirstStar }}</div>
+    {% endif %}
+    {% if result.resultSecondStar is defined %}
+        <div>⭐⭐ {{ result.resultSecondStar }}</div>
+    {% endif %}
+    {% if result.error is defined %}
+        <div>{{ result.error }}</div>
+    {% endif %}
+    {% if result.puzzleInput is defined %}
+        <div class="mt-4 mb-2 text-sm">Puzzle Input</div>
+        <div class="p-2 rounded-lg border border-rose-300">
+            <pre class="text-xs max-h-60 overflow-auto">{{ result.puzzleInput }}</pre>
+        </div>
+    {% endif %}
+</div>
